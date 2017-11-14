@@ -70,14 +70,16 @@ public class EmployeesService implements IEmployeesDao {
     public Employees findById(int id) {
         
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement prstmt = null;
         ResultSet rs = null;
         Employees employees = new Employees();
 
         try {
             con = Connector.getConnect();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL_FIND_ALL);
+            prstmt = con.prepareStatement(SQL_FIND_BY_ID);
+            prstmt.setInt(1, id);
+            rs = prstmt.executeQuery();
+
             while (rs.next()) {
                 
                 employees.setId(rs.getInt(Employees.ID_COLUMN));
@@ -85,16 +87,16 @@ public class EmployeesService implements IEmployeesDao {
                 employees.setLastname(rs.getString(Employees.LASTNAME_COLUMN));
                 employees.setPatronymic(rs.getString(Employees.PATRONYMIC_COLUMN));
                 employees.setPosition(new Position());
-                employees.getPosition().setPosition(rs.getString(Position.POSITION_COLUMN));
+                employees.getPosition().setId(rs.getInt(Employees.POSITION_ID_COLUMN));
 
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            if (stmt != null) {
+            if (prstmt != null) {
                 try {
-                    stmt.close();
+                    prstmt.close();
                 } catch (SQLException ex) {
                 }
             }

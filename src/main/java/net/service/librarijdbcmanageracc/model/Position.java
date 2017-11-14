@@ -25,6 +25,12 @@ public class Position {
     public void setPosition(String Position) {
         this.Position = Position;
     }
+
+    @Override
+    public String toString() {
+        return "Position{" + "id=" + id + ", Position=" + Position + '}';
+    }
+    
     
     
 }

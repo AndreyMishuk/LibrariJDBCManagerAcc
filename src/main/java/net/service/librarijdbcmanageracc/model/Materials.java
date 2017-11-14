@@ -1,9 +1,6 @@
 
 package net.service.librarijdbcmanageracc.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Materials {
     
     public static final String TABLE_NAME = "materials";
@@ -15,9 +12,9 @@ public class Materials {
     
     private int id;
     private String material;
-    private String quantity;
-    private Set<Employees> employeesSet = new HashSet<>();
-    private Set<Objects> objectsSet = new HashSet<>();
+    private int quantity;
+    private Employees employees = new Employees();
+    private Objects objects = new Objects();
 
     public int getId() {
         return id;
@@ -35,28 +32,33 @@ public class Materials {
         this.material = material;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Set<Employees> getEmployeesSet() {
-        return employeesSet;
+    public Employees getEmployees() {
+        return employees;
     }
 
-    public void setEmployeesSet(Set<Employees> employeesSet) {
-        this.employeesSet = employeesSet;
+    public void setEmployee(Employees employees) {
+        this.employees = employees;
     }
 
-    public Set<Objects> getObjectsSet() {
-        return objectsSet;
+    public Objects getObjects() {
+        return objects;
     }
 
-    public void setObjectsSet(Set<Objects> objectsSet) {
-        this.objectsSet = objectsSet;
+    public void setObjects(Objects objects) {
+        this.objects = objects;
+    }
+
+    @Override
+    public String toString() {
+        return "Materials{" + "id=" + id + ", material=" + material + ", quantity=" + quantity + ", employees=" + employees.getId()+ ", objects=" + objects.getId()+ '}';
     }
     
     

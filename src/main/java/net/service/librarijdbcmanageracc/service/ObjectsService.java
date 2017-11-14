@@ -66,14 +66,15 @@ public class ObjectsService implements IObjectsDao {
     public Objects findById(int id) {
 
         Connection con = null;
-        Statement stmt = null;
+        PreparedStatement prstmt = null;
         ResultSet rs = null;
         Objects objects = new Objects();
 
         try {
             con = Connector.getConnect();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL_FIND_ALL);
+            prstmt = con.prepareStatement(SQL_FIND_BY_ID);
+            prstmt.setInt(1, id);
+            rs = prstmt.executeQuery();
             while (rs.next()) {
 
                 objects.setId(rs.getInt(Objects.ID_COLUMN));
@@ -85,9 +86,9 @@ public class ObjectsService implements IObjectsDao {
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            if (stmt != null) {
+            if (prstmt != null) {
                 try {
-                    stmt.close();
+                    prstmt.close();
                 } catch (SQLException ex) {
                 }
             }

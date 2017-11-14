@@ -9,12 +9,13 @@ public class Objects {
     public static final String TABLE_NAME = "objects";
     public static final String ID_COLUMN = "id";
     public static final String NAME_COLUMN = "name";
-    public static final String ADDRESS_COLUMN = "name";
+    public static final String ADDRESS_COLUMN = "address";
     
     private int id;
     private String name;
     private String address;
-    private Set<Employees> employeesSet = new HashSet<>();
+    
+    private Set<Employees> employeesSet = new HashSet<>(); //???????????
 
     public int getId() {
         return id;
@@ -47,7 +48,10 @@ public class Objects {
     public void setEmployeesSet(Set<Employees> employeesSet) {
         this.employeesSet = employeesSet;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Objects{" + "id=" + id + ", name=" + name + ", address=" + address + '}';
+    }
     
 }

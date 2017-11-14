@@ -1,9 +1,6 @@
 
 package net.service.librarijdbcmanageracc.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Employees {
     
     public static final String TABLE_NAME = "employees";
@@ -17,7 +14,7 @@ public class Employees {
     private String firstname;
     private String lastname;
     private String patronymic;
-    private Set<Position> positionSet = new HashSet<>();
+    private Position position;
 
     public int getId() {
         return id;
@@ -51,12 +48,17 @@ public class Employees {
         this.patronymic = patronymic;
     }
 
-    public Set<Position> getPositionSet() {
-        return positionSet;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setPositionSet(Set<Position> positionSet) {
-        this.positionSet = positionSet;
+    public void setPosition(Position position) {
+        this.position = position;
+    }    
+
+    @Override
+    public String toString() {
+        return "Employees{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", patronymic=" + patronymic + ", position=" + position.getPosition() + '}';
     }
     
 }
