@@ -15,15 +15,17 @@ import net.service.librarijdbcmanageracc.model.Position;
 public class EmployeesService implements IEmployeesDao {
 
     @Override
-    public List<Employees> findAll() {
+    public List<Employees> findAll() throws SQLException {
 
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
+        PositionService positionService = new PositionService();
         List<Employees> employeesList = new ArrayList<>();
 
         try {
             con = Connector.getConnect();
+            con.setAutoCommit(false);
             stmt = con.createStatement();
             rs = stmt.executeQuery(SQL_FIND_ALL);
             while (rs.next()) {
@@ -33,15 +35,17 @@ public class EmployeesService implements IEmployeesDao {
                 employees.setFirstname(rs.getString(Employees.FIRSTNAME_COLUMN));
                 employees.setLastname(rs.getString(Employees.LASTNAME_COLUMN));
                 employees.setPatronymic(rs.getString(Employees.PATRONYMIC_COLUMN));
-                employees.setPosition(new Position());
-                employees.getPosition().setPosition(rs.getString(Employees.POSITION_ID_COLUMN));
-
+                employees.setPosition(positionService.findById(rs.getInt(Employees.POSITION_ID_COLUMN)));
+  
                 employeesList.add(employees);
 
             }
+            con.commit();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
+            con.rollback();
+           
         } finally {
             if (stmt != null) {
                 try {
@@ -67,15 +71,17 @@ public class EmployeesService implements IEmployeesDao {
     }
 
     @Override
-    public Employees findById(int id) {
+    public Employees findById(int id) throws SQLException {
         
         Connection con = null;
         PreparedStatement prstmt = null;
         ResultSet rs = null;
         Employees employees = new Employees();
+        PositionService positionService = new PositionService();
 
         try {
             con = Connector.getConnect();
+            con.setAutoCommit(false);
             prstmt = con.prepareStatement(SQL_FIND_BY_ID);
             prstmt.setInt(1, id);
             rs = prstmt.executeQuery();
@@ -86,13 +92,15 @@ public class EmployeesService implements IEmployeesDao {
                 employees.setFirstname(rs.getString(Employees.FIRSTNAME_COLUMN));
                 employees.setLastname(rs.getString(Employees.LASTNAME_COLUMN));
                 employees.setPatronymic(rs.getString(Employees.PATRONYMIC_COLUMN));
-                employees.setPosition(new Position());
-                employees.getPosition().setId(rs.getInt(Employees.POSITION_ID_COLUMN));
+                employees.setPosition(positionService.findById(rs.getInt(Employees.POSITION_ID_COLUMN)));
+                
 
             }
+            con.commit();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
+            con.rollback();
         } finally {
             if (prstmt != null) {
                 try {

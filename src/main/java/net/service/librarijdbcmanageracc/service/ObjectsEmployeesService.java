@@ -29,10 +29,12 @@ public class ObjectsEmployeesService implements IObjectsEmployeesDao {
             ObjectsService objService = new ObjectsService();
 
             con = Connector.getConnect();
+            con.setAutoCommit(false);
             stmt = con.createStatement();
             rs = stmt.executeQuery(SQL_FIND_ALL);
             Employees employees;
             Objects objects;
+            
 
             while (rs.next()) {
 
@@ -42,9 +44,15 @@ public class ObjectsEmployeesService implements IObjectsEmployeesDao {
                 objEmp.put(objects, employees);
 
             }
+            
+            con.commit();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            try {
+                ex.printStackTrace();
+                con.rollback();
+            } catch (SQLException ex1) {
+            }
         } finally {
             if (stmt != null) {
                 try {
@@ -81,6 +89,7 @@ public class ObjectsEmployeesService implements IObjectsEmployeesDao {
             ObjectsService objService = new ObjectsService();
 
             con = Connector.getConnect();
+            con.setAutoCommit(false);
             prstmt = con.prepareStatement(SQL_FIND_EMPLOYEES_BY_ID);
             prstmt.setInt(1, employees.getId());
             rs = prstmt.executeQuery();
@@ -96,26 +105,31 @@ public class ObjectsEmployeesService implements IObjectsEmployeesDao {
                 objEmp.put(objects, empl);
 
             }
+            con.commit();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            try {
+                ex.printStackTrace();
+                con.rollback();
+            } catch (SQLException ex1) {
+            }
         } finally {
             if (prstmt != null) {
                 try {
                     prstmt.close();
-                } catch (SQLException ex) {
+                } catch (SQLException ex1) {
                 }
             }
             if (con != null) {
                 try {
                     con.close();
-                } catch (SQLException ex) {
+                } catch (SQLException ex1) {
                 }
             }
             if (rs != null) {
                 try {
                     rs.close();
-                } catch (SQLException ex) {
+                } catch (SQLException ex1) {
                 }
             }
         }
@@ -136,6 +150,7 @@ public class ObjectsEmployeesService implements IObjectsEmployeesDao {
             ObjectsService objService = new ObjectsService();
 
             con = Connector.getConnect();
+            con.setAutoCommit(false);
             prstmt = con.prepareStatement(SQL_FIND_EMPLOYEES_BY_ID);
             prstmt.setInt(1, objects.getId());
             rs = prstmt.executeQuery();
@@ -151,9 +166,15 @@ public class ObjectsEmployeesService implements IObjectsEmployeesDao {
                 objEmp.put(obj, employees);
 
             }
+            con.commit();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            try {
+                con.rollback();
+                ex.printStackTrace();
+            } catch (SQLException ex1) {
+            }
+            
         } finally {
             if (prstmt != null) {
                 try {

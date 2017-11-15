@@ -18,15 +18,16 @@ public class Connector {
     private static final String URL = "jdbc:mysql://localhost:3306/managerAcc?autoReconnect=true&useSSL=false";
     private static final String USER = "root";
     private static final String PASSWORD = "andrey123ariman";
-    
+
     private static Connection con;
 
-    public static Connection getConnect() throws SQLException{
+    public static Connection getConnect() throws SQLException {
         try {
             con = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            System.out.println("Not found driver JDBC");
+            
         }
         return con;
     }
+    
 }
